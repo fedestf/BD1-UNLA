@@ -54,7 +54,8 @@ DROP TABLE IF EXISTS estacion;
 CREATE TABLE IF NOT EXISTS estacion (
     idestacion INT NOT NULL,
     idlineaDeMontaje INT NOT NULL,
-    idinsumo INT NOT NULL,
+    idinsumo INT NULL,
+    idautoparte INT NULL,
     tarea VARCHAR(45),
     PRIMARY KEY (idestacion),
     FOREIGN KEY (idlineaDeMontaje)
@@ -65,7 +66,6 @@ CREATE TABLE IF NOT EXISTS estacion (
         REFERENCES insumo (idinsumo)
 );
 
--- ----------------------------------------------------
 DROP TABLE IF EXISTS concesionaria;
 CREATE TABLE IF NOT EXISTS concesionaria(
 	idconcesionaria INT NOT NULL,
