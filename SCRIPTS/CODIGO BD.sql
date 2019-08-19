@@ -81,11 +81,11 @@ CREATE TABLE IF NOT EXISTS concesionaria(
 DROP TABLE IF EXISTS vehiculo;
 CREATE TABLE IF NOT EXISTS vehiculo (
     numChasis VARCHAR(20) NOT NULL,
-    idmodelo INT NOT NULL,
+    idmodelo INT,
     PRIMARY KEY (numChasis),
     FOREIGN KEY (idmodelo)
         REFERENCES modelo (idmodelo)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS pedidoAutopartes;
