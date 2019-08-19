@@ -59,11 +59,14 @@ CREATE TABLE IF NOT EXISTS estacion (
     tarea VARCHAR(45),
     PRIMARY KEY (idestacion),
     FOREIGN KEY (idlineaDeMontaje)
-        REFERENCES lineaDeMontaje (idlineaDeMontaje),
+        REFERENCES lineaDeMontaje (idlineaDeMontaje)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (idautoparte)
-        REFERENCES autoparte (idautoparte),
+        REFERENCES autoparte (idautoparte)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (idinsumo)
         REFERENCES insumo (idinsumo)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 DROP TABLE IF EXISTS concesionaria;
@@ -75,12 +78,13 @@ CREATE TABLE IF NOT EXISTS concesionaria(
 
 DROP TABLE IF EXISTS vehiculo;
 CREATE TABLE IF NOT EXISTS vehiculo (
-	numChasis VARCHAR(20) NOT NULL,
-	idmodelo INT NOT NULL,
-	PRIMARY KEY (numChasis),
-	FOREIGN KEY (idmodelo)
-		REFERENCES modelo (idmodelo)
-    );
+    numChasis VARCHAR(20) NOT NULL,
+    idmodelo INT NOT NULL,
+    PRIMARY KEY (numChasis),
+    FOREIGN KEY (idmodelo)
+        REFERENCES modelo (idmodelo)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
 DROP TABLE IF EXISTS pedidoAutopartes;
 CREATE TABLE IF NOT EXISTS pedidoAutopartes(
@@ -137,15 +141,17 @@ CREATE TABLE IF NOT EXISTS pedidoInsumo (
 
 DROP TABLE IF EXISTS desarrollo;
 CREATE TABLE IF NOT EXISTS desarrollo (
-	idestacion INT NOT NULL,
-	numChasis VARCHAR(20) NOT NULL,
-	fechaIngreso DATE NOT NULL,
-	fechaSalida DATE NOT NULL,
-	PRIMARY KEY (numChasis, idestacion),
-	FOREIGN KEY (idestacion)
-		REFERENCES estacion (idestacion),
-	FOREIGN KEY (numChasis)
-		REFERENCES vehiculo (numChasis)
+    idestacion INT NOT NULL,
+    numChasis VARCHAR(20) NOT NULL,
+    fechaIngreso DATE NOT NULL,
+    fechaSalida DATE NOT NULL,
+    PRIMARY KEY (numChasis , idestacion),
+    FOREIGN KEY (idestacion)
+        REFERENCES estacion (idestacion)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (numChasis)
+        REFERENCES vehiculo (numChasis)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 
