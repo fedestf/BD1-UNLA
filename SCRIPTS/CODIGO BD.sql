@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS modelo;
 CREATE TABLE IF NOT EXISTS modelo (
     idmodelo INT NOT NULL,
     nombre VARCHAR(45),
-    precio INT NOT NULL,
+    precio FLOAT NOT NULL, -- paso de int a float , modificar el der para la img. 
     PRIMARY KEY (idmodelo)
 );
 
