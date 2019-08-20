@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
--- Server version	5.7.21-log
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -26,15 +26,15 @@
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteAlta`(
-	in _idautoparte INT,
-    in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteAlta`(
+	in _idautoparte INT,
+    in _nombre varchar(45)
 )
-BEGIN
-	insert into autoparte (idautoparte,nombre) values(_idautoparte,_nombre);
-    
+BEGIN
+	insert into autoparte (idautoparte,nombre) values(_idautoparte,_nombre);
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -49,13 +49,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteBaja`(
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteBaja`(
+	in _nombre varchar(45)
 )
-BEGIN
-	delete from autoparte where nombre = _nombre;
+BEGIN
+	delete from autoparte where nombre = _nombre;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -70,15 +70,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteMod`(
-	in _idautoparte int,
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `autoparteMod`(
+	in _idautoparte int,
+	in _nombre varchar(45)
 )
-BEGIN
-	update autoparte SET nombre = _nombre
-    where idautoparte = _idautoparte;
+BEGIN
+	update autoparte SET nombre = _nombre
+    where idautoparte = _idautoparte;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -93,19 +93,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaAlta`(
-
-in _idfabrica int,
-
-in _nombre varchar(45)
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaAlta`(
+in _idfabrica int,
+in _nombre varchar(45)
 )
-BEGIN
-
- insert into fabrica (idfabrica,nombre) values(_idfabrica,_nombre);
-
+BEGIN
+ insert into fabrica (idfabrica,nombre) values(_idfabrica,_nombre);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -120,19 +115,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaBaja`(
-
-
-
-	in _nombre varchar(45)
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaBaja`(
+
+	in _nombre varchar(45)
 )
-BEGIN
-
-	delete from fabrica  where fabrica.nombre=_nombre;
-
+BEGIN
+	delete from fabrica  where fabrica.nombre=_nombre;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -147,23 +137,16 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaMod`(
-
-in _idfabrica int,
-
-in _nombre varchar(45)
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaMod`(
+in _idfabrica int,
+in _nombre varchar(45)
 )
-BEGIN
-
-update fabrica SET nombre=_nombre
-
-where idfabrica=_idfabrica;
-
-
-
+BEGIN
+update fabrica SET nombre=_nombre
+where idfabrica=_idfabrica;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -178,15 +161,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoAlta`(
-	in _idinsumo INT,
-    in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoAlta`(
+	in _idinsumo INT,
+    in _nombre varchar(45)
 )
-BEGIN
-	insert into insumo (idinsumo,nombre) values(_idinsumo,_nombre);
-    
+BEGIN
+	insert into insumo (idinsumo,nombre) values(_idinsumo,_nombre);
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -201,13 +184,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoBaja`(
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoBaja`(
+	in _nombre varchar(45)
 )
-BEGIN
-	delete from insumo where nombre = _nombre;
+BEGIN
+	delete from insumo where nombre = _nombre;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -222,15 +205,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoMod`(
-	in _idinsumo int,
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoMod`(
+	in _idinsumo int,
+	in _nombre varchar(45)
 )
-BEGIN
-	update insumo SET nombre = _nombre
-    where idinsumo = _idinsumo;
+BEGIN
+	update insumo SET nombre = _nombre
+    where idinsumo = _idinsumo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -245,15 +228,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorAlta`(
-	in _idproveedor INT,
-    in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorAlta`(
+	in _idproveedor INT,
+    in _nombre varchar(45)
 )
-BEGIN
-	insert into proveedor (idproveedor,nombre) values(_idproveedor,_nombre);
-    
+BEGIN
+	insert into proveedor (idproveedor,nombre) values(_idproveedor,_nombre);
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -268,13 +251,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorBaja`(
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorBaja`(
+	in _nombre varchar(45)
 )
-BEGIN
-	delete from proveedor where nombre = _nombre;
+BEGIN
+	delete from proveedor where nombre = _nombre;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -289,15 +272,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorMod`(
-	in _idproveedor int,
-	in _nombre varchar(45)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorMod`(
+	in _idproveedor int,
+	in _nombre varchar(45)
 )
-BEGIN
-	update proveedor SET nombre = _nombre
-    where idproveedor = _idproveedor;
+BEGIN
+	update proveedor SET nombre = _nombre
+    where idproveedor = _idproveedor;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -314,4 +297,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-19 20:15:39
+-- Dump completed on 2019-08-19 23:21:13
