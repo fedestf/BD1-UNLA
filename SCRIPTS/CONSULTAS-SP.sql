@@ -1,34 +1,81 @@
 call fabricaAlta(2,'Roberto');
 call fabricaMod(2,'Rodriguez');
 call fabricaBaja('Rodriguez');
-select * from fabrica;
+SELECT 
+    *
+FROM
+    fabrica;
 
 call proveedorAlta(4, "Augusto Cesar");
 call proveedorMod(4, "Carlos Carlin");
 call proveedorBaja("Carlos Carlin");
-select * from proveedor;
+SELECT 
+    *
+FROM
+    proveedor;
 
 call autoparteAlta(5, "Caja");
 call autoparteMod(5, "Transmision");
 call autoparteBaja("Transmision");
-select * from autoparte;
+SELECT 
+    *
+FROM
+    autoparte;
 
 call insumoAlta(4, "Lampara");
 call insumoMod(4, "Espejo");
 call insumoBaja("Espejo");
-select * from insumo;
+SELECT 
+    *
+FROM
+    insumo;
 
 call ventaAlta(1, 1, 1, 2, '2018-10-10');
-select * from venta;
+SELECT 
+    *
+FROM
+    venta;
 
-call terminalauto.pedidoAutopartesAlta(1, 2, 1, '2018-10-10', 1500, 2);
-select * from pedidoAutopartes;
+call lineaDeMontajeAlta(4, 1, 2);
+call lineaDeMontajeBaja(1);
+SELECT 
+    *
+FROM
+    lineaDeMontaje;
+
+call pedidoAutopartesAlta(1, 2, 1, '2018-10-10', 1500, 2);
+SELECT 
+    *
+FROM
+    pedidoAutopartes;
+
+call estacionAlta(4, 1, null, 1, 'pegadopapa');
+SELECT 
+    *
+FROM
+    lineademontaje l
+        INNER JOIN
+    estacion e ON l.idlineaDeMontaje = e.idlineaDeMontaje
+WHERE
+    l.idlineaDeMontaje = 1;
 
 
 
 
-delete from modelo where idmodelo = 3; 
-select * from modelo, vehiculo group by vehiculo.numChasis;
+DELETE FROM modelo 
+WHERE
+    idmodelo = 3;
+SELECT 
+    *
+FROM
+    modelo,
+    vehiculo
+GROUP BY vehiculo.numChasis;
 
-delete from vehiculo where numChasis = 'M2-01';
-select * from vehiculo;
+DELETE FROM vehiculo 
+WHERE
+    numChasis = 'M2-01';
+SELECT 
+    *
+FROM
+    vehiculo;
