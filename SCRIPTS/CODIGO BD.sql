@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS estacion (
     PRIMARY KEY (idestacion),
     FOREIGN KEY (idlineaDeMontaje)
         REFERENCES lineaDeMontaje (idlineaDeMontaje)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (idautoparte)
         REFERENCES autoparte (idautoparte)
         ON DELETE CASCADE ON UPDATE CASCADE,
