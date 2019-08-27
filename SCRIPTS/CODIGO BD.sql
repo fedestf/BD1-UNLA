@@ -20,14 +20,14 @@ DROP TABLE IF EXISTS fabrica;
 CREATE TABLE IF NOT EXISTS fabrica (
     idfabrica INT NOT NULL,
     nombre VARCHAR(45),
-    PRIMARY KEY (idfabrica) 
+    PRIMARY KEY (idfabrica)
 );
 
 DROP TABLE IF EXISTS modelo;
 CREATE TABLE IF NOT EXISTS modelo (
     idmodelo INT NOT NULL,
     nombre VARCHAR(45),
-    precio FLOAT NOT NULL, -- paso de int a float , modificar el der para la img. 
+    precio FLOAT NOT NULL,
     PRIMARY KEY (idmodelo)
 );
 
@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS estacion (
 );
 
 DROP TABLE IF EXISTS concesionaria;
-CREATE TABLE IF NOT EXISTS concesionaria(
-	idconcesionaria INT NOT NULL,
-	nombre VARCHAR(45) NOT NULL,
-	PRIMARY KEY (idconcesionaria)
-  ) ;
+CREATE TABLE IF NOT EXISTS concesionaria (
+    idconcesionaria INT NOT NULL,
+    nombre VARCHAR(45) NOT NULL,
+    PRIMARY KEY (idconcesionaria)
+);
 
 DROP TABLE IF EXISTS vehiculo;
 CREATE TABLE IF NOT EXISTS vehiculo (
