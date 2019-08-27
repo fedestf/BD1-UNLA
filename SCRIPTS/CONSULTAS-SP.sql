@@ -18,6 +18,9 @@ call insumoMod(4, "Espejo");
 call insumoBaja("Espejo");
 select * from insumo;
 
+call ventaAlta(1, 1, 1, 2, '2018-10-10');
+select * from venta;
+
 
 delete from modelo where idmodelo = 3; 
 select * from modelo, vehiculo group by vehiculo.numChasis;
