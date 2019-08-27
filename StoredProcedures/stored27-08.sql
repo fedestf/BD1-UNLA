@@ -21,8 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'c526ccd0-9a9c-11e9-ba2a-8c164547992a:1-578,
-fa75218e-9a9c-11e9-a188-8c164547992a:1-81';
+
 
 --
 -- Dumping routines for database 'terminalauto'
@@ -399,24 +398,41 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoInsumoAlta`(
-	in _idinsumo INT,
-    in _idproveedor INT,
-    in _idfabrica INT,
-    in _fecha DATE,
-    in _precio FLOAT,
-    in _cantidad INT
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoInsumoAlta`(
+
+	in _idinsumo INT,
+
+    in _idproveedor INT,
+
+    in _idfabrica INT,
+
+    in _fecha DATE,
+
+    in _precio FLOAT,
+
+    in _cantidad INT
+
+
+
 )
-BEGIN
-	insert into pedidoInsumo values	(
-    null,
-    _idproveedor ,
-    _idfabrica,
-    _fecha, 
-    _precio,
-    _cantidad 
-    );
+BEGIN
+
+	insert into pedidoInsumo values	(
+
+    null,
+
+    _idproveedor ,
+
+    _idfabrica,
+
+    _fecha, 
+
+    _precio,
+
+    _cantidad 
+
+    );
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -433,11 +449,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoInsumoBaja`(
-	in _idpedidoInsumo int
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoInsumoBaja`(
+
+	in _idpedidoInsumo int
+
 )
-BEGIN
-delete from pedidoinsumo where idpedidoInsu=_idpedidoInsumo;
+BEGIN
+
+delete from pedidoinsumo where idpedidoInsu=_idpedidoInsumo;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
