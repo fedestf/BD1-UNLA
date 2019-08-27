@@ -21,6 +21,9 @@ select * from insumo;
 call ventaAlta(1, 1, 1, 2, '2018-10-10');
 select * from venta;
 
+call terminalauto.pedidoAutopartesAlta(1, 2, 1, '2018-10-10', 1500, 2);
+select * from pedidoAutopartes;
+
 
 delete from modelo where idmodelo = 3; 
 select * from modelo, vehiculo group by vehiculo.numChasis;
