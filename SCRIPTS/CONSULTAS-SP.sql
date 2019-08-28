@@ -59,6 +59,9 @@ FROM
 WHERE
     l.idlineaDeMontaje = 1;
 
+call modeloAlta(4, 'pepetirotiro', 152.325);
+call modeloBaja(4);
+select * from modelo;
 
 
 
