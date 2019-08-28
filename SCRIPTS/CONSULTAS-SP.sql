@@ -61,7 +61,13 @@ WHERE
 
 call modeloAlta(4, 'pepetirotiro', 152.325);
 call modeloBaja(4);
+call modeloMod(4, 'sad', 123);
 select * from modelo;
+
+call vehiculoAlta('AGP-101', 2);
+call vehiculoMod('AGP-101', 3);
+call vehiculoBaja('AGP-101');
+select * from vehiculo;
 
 
 
