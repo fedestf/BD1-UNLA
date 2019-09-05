@@ -1,0 +1,3 @@
+ABM DE :
+
+insumo,proveedor , proveedorinsumo, concesionaria , venta,detalleventa
