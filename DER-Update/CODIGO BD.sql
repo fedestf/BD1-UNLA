@@ -4,7 +4,7 @@ use terminalauto;
 
 
 
-drop table proveedor;
+drop table if exists proveedor;
 
 CREATE TABLE proveedor (
     idproveedor INT NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE proveedor (
 
 
 
-drop table modelo;
+drop table if exists modelo;
 CREATE TABLE IF NOT EXISTS modelo (
     idmodelo INT NOT NULL,
     nombre VARCHAR(45) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS modelo (
 
 
 
-drop table lineaDeMontaje;
+drop table if exists lineaDeMontaje;
 CREATE TABLE lineaDeMontaje (
     idlineaDeMontaje INT NOT NULL,
     idmodelo INT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE lineaDeMontaje (
         ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-drop table estacion;
+drop table if exists estacion;
 CREATE TABLE IF NOT EXISTS estacion (
     idestacion INT NOT NULL,
     idlineaDeMontaje INT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS estacion (
 );
 
 
-drop table concesionaria;
+drop table if exists concesionaria;
 CREATE TABLE IF NOT EXISTS concesionaria (
     idconcesionaria INT NOT NULL,
     nombre VARCHAR(45) NOT NULL,
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS concesionaria (
 );
 
 
-drop table venta;
+drop table if exists venta;
 CREATE TABLE IF NOT EXISTS venta (
-    idventa INT NULL AUTO_INCREMENT,
+    idventa INT AUTO_INCREMENT,
     fecha DATE NOT NULL,
     idconcesionaria INT NOT NULL,
     cuit VARCHAR(45) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS venta (
 );
 
 
-drop table detalleVenta;
+drop table if exists detalleVenta;
 CREATE TABLE IF NOT EXISTS detalleVenta (
     idventa INT NOT NULL,
     idmodelo INT NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS detalleVenta (
 );
 
 
-
+drop table if exists vehiculo;
 CREATE TABLE IF NOT EXISTS vehiculo (
     numChasis VARCHAR(20) NOT NULL,
     idmodelo INT NOT NULL,
@@ -102,24 +102,24 @@ CREATE TABLE IF NOT EXISTS vehiculo (
     fechaFin DATE NOT NULL,
     PRIMARY KEY (numChasis),
     FOREIGN KEY (idmodelo , idventa)
-        REFERENCES detalleVenta (idmodelo, idventa)
+        REFERENCES detalleVenta (idmodelo , idventa)
         ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY (idestacion)
         REFERENCES estacion (idestacion)
         ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-
+drop table if exists insumo;
 CREATE TABLE IF NOT EXISTS insumo (
     idinsumo INT NOT NULL,
-    nombre varchar(45),
+    nombre VARCHAR(45),
     eliminado BOOLEAN NOT NULL,
     fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idinsumo)
 );
-
+drop table if exists pedidoInsumo;
 CREATE TABLE IF NOT EXISTS pedidoInsumo (
-    idpedidoInsu INT NULL AUTO_INCREMENT,
+    idpedidoInsu INT AUTO_INCREMENT,
     idinsumo INT NOT NULL,
     fecha DATE NOT NULL,
     precio FLOAT NOT NULL,
@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS pedidoInsumo (
         ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+drop table if exists estacionAuto;
 CREATE TABLE IF NOT EXISTS estacionAuto (
     idestacion INT NOT NULL,
     numChasis VARCHAR(20) NOT NULL,
@@ -142,8 +143,9 @@ CREATE TABLE IF NOT EXISTS estacionAuto (
     FOREIGN KEY (numChasis)
         REFERENCES vehiculo (numChasis)
         ON DELETE NO ACTION ON UPDATE NO ACTION
-)  ENGINE=INNODB;
+);
 
+drop table if exists insumoEstacion;
 CREATE TABLE IF NOT EXISTS insumoEstacion (
     idestacion INT NOT NULL,
     idinsumo INT NOT NULL,
@@ -157,7 +159,7 @@ CREATE TABLE IF NOT EXISTS insumoEstacion (
         ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-
+drop table if exists proveedorInsumo;
 CREATE TABLE IF NOT EXISTS proveedorInsumo (
     idinsumo INT NOT NULL,
     idproveedor INT NOT NULL,
