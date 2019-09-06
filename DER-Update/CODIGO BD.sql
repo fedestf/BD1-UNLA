@@ -1,5 +1,7 @@
--------------------------------
-CREATE SCHEMA IF NOT EXISTS terminalauto;
+drop schema if exists terminalauto;
+create schema terminalauto;
+use terminalauto;
+
 
 
 drop table proveedor;
@@ -7,8 +9,8 @@ drop table proveedor;
 CREATE TABLE proveedor (
     idproveedor INT NOT NULL,
     nombre VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE NULL,
+    eliminado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idproveedor)
 );
 
@@ -50,8 +52,8 @@ drop table concesionaria;
 CREATE TABLE IF NOT EXISTS concesionaria (
     idconcesionaria INT NOT NULL,
     nombre VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE NULL,
+    eliminado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idconcesionaria)
 );
 
@@ -62,8 +64,8 @@ CREATE TABLE IF NOT EXISTS venta (
     fecha DATE NOT NULL,
     idconcesionaria INT NOT NULL,
     cuit VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE NULL,
+    eliminado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idventa),
     FOREIGN KEY (idconcesionaria)
         REFERENCES concesionaria (idconcesionaria)
@@ -78,8 +80,8 @@ CREATE TABLE IF NOT EXISTS detalleVenta (
     cantidad INT NOT NULL,
     precioUnitario DOUBLE NOT NULL,
     precioFinal DOUBLE NOT NULL,
-    elimnado TINYINT(1) NOT NULL,
-    fechaEliminado DATE NULL,
+    elimnado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idmodelo , idventa),
     FOREIGN KEY (idventa)
         REFERENCES venta (idventa)
@@ -92,90 +94,81 @@ CREATE TABLE IF NOT EXISTS detalleVenta (
 
 
 CREATE TABLE IF NOT EXISTS vehiculo (
-  `numChasis` VARCHAR(20) NOT NULL,
-  `idmodelo` INT NOT NULL,
-  `idventa` INT NOT NULL,
-  `idestacion` INT NOT NULL,
-  `fechaInicio` DATE NOT NULL,
-  `fechaFin` DATE NOT NULL,
-  PRIMARY KEY (`numChasis`),
-    FOREIGN KEY (`idmodelo` , `idventa`)
-    REFERENCES `detalleVenta` (`idmodelo` , `idventa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    FOREIGN KEY (`idestacion`)
-    REFERENCES `estacion` (`idestacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    numChasis VARCHAR(20) NOT NULL,
+    idmodelo INT NOT NULL,
+    idventa INT NOT NULL,
+    idestacion INT NOT NULL,
+    fechaInicio DATE NOT NULL,
+    fechaFin DATE NOT NULL,
+    PRIMARY KEY (numChasis),
+    FOREIGN KEY (idmodelo , idventa)
+        REFERENCES detalleVenta (idmodelo, idventa)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (idestacion)
+        REFERENCES estacion (idestacion)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
 
 CREATE TABLE IF NOT EXISTS insumo (
-  `idinsumo` INT NOT NULL,
-  `nombre` boolean NOT NULL,
-  `eliminado` TINYINT(1) NOT NULL,
-  `fechaEliminado` DATE default NULL,
-  PRIMARY KEY (`idinsumo`))
-ENGINE = InnoDB;
+    idinsumo INT NOT NULL,
+    nombre varchar(45),
+    eliminado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
+    PRIMARY KEY (idinsumo)
+);
 
 CREATE TABLE IF NOT EXISTS pedidoInsumo (
-  `idpedidoInsu` INT NULL AUTO_INCREMENT,
-  `idinsumo` INT NOT NULL,
-  `fecha` DATE NOT NULL,
-  `precio` FLOAT NOT NULL,
-  `cantidad` INT NOT NULL,
-  PRIMARY KEY (`idpedidoInsu`),
-    FOREIGN KEY (`idinsumo`)
-    REFERENCES `insumo` (`idinsumo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    idpedidoInsu INT NULL AUTO_INCREMENT,
+    idinsumo INT NOT NULL,
+    fecha DATE NOT NULL,
+    precio FLOAT NOT NULL,
+    cantidad INT NOT NULL,
+    PRIMARY KEY (idpedidoInsu),
+    FOREIGN KEY (idinsumo)
+        REFERENCES insumo (idinsumo)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
-CREATE TABLE IF NOT EXISTS estacionAuto(
-  `idestacion` INT NOT NULL,
-  `numChasis` VARCHAR(20) NOT NULL,
-  `fechaIngreso` DATE NOT NULL,
-  `fechaSalida` DATE NOT NULL,
-    PRIMARY KEY (`numChasis`, `idestacion`),
-    FOREIGN KEY (`idestacion`)
-    REFERENCES `estacion` (`idestacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-     FOREIGN KEY (`numChasis`)
-    REFERENCES `vehiculo` (`numChasis`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS estacionAuto (
+    idestacion INT NOT NULL,
+    numChasis VARCHAR(20) NOT NULL,
+    fechaIngreso DATE NOT NULL,
+    fechaSalida DATE NOT NULL,
+    PRIMARY KEY (numChasis , idestacion),
+    FOREIGN KEY (idestacion)
+        REFERENCES estacion (idestacion)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (numChasis)
+        REFERENCES vehiculo (numChasis)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS insumoEstacion(
-  `idestacion` INT NOT NULL,
-  `idinsumo` INT NOT NULL,
-  `cantidad` DOUBLE NULL,
-  PRIMARY KEY (`idestacion`, `idinsumo`),
-    FOREIGN KEY (`idestacion`)
-    REFERENCES`estacion` (`idestacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-   FOREIGN KEY (`idinsumo`)
-    REFERENCES `insumo` (`idinsumo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS insumoEstacion (
+    idestacion INT NOT NULL,
+    idinsumo INT NOT NULL,
+    cantidad DOUBLE NULL,
+    PRIMARY KEY (idestacion , idinsumo),
+    FOREIGN KEY (idestacion)
+        REFERENCES estacion (idestacion)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (idinsumo)
+        REFERENCES insumo (idinsumo)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
 
-CREATE TABLE IF NOT EXISTS proveedorInsumo(
-  `idinsumo` INT NOT NULL,
-  `idproveedor` INT NOT NULL,
-  `eliminado` boolean NOT NULL,
-  `fechaEliminado` DATE default NULL,
-  PRIMARY KEY (`idinsumo`, `idproveedor`),
-   FOREIGN KEY (`idinsumo`)
-    REFERENCES `insumo` (`idinsumo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-   FOREIGN KEY (`idproveedor`)
-    REFERENCES `proveedor` (`idproveedor`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS proveedorInsumo (
+    idinsumo INT NOT NULL,
+    idproveedor INT NOT NULL,
+    eliminado BOOLEAN NOT NULL,
+    fechaEliminado DATE DEFAULT NULL,
+    PRIMARY KEY (idinsumo , idproveedor),
+    FOREIGN KEY (idinsumo)
+        REFERENCES insumo (idinsumo)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (idproveedor)
+        REFERENCES proveedor (idproveedor)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
