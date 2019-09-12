@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS detalleVenta (
     cantidad INT NOT NULL,
     precioUnitario DOUBLE NOT NULL,
     precioFinal DOUBLE NOT NULL,
-    elimnado BOOLEAN NOT NULL,
+    eliminado BOOLEAN NOT NULL,
     fechaEliminado DATE DEFAULT NULL,
     PRIMARY KEY (idmodelo , idventa),
     FOREIGN KEY (idventa)
