@@ -21,8 +21,6 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'c526ccd0-9a9c-11e9-ba2a-8c164547992a:1-850,
-fa75218e-9a9c-11e9-a188-8c164547992a:1-81';
 
 --
 -- Dumping routines for database 'terminalauto'
