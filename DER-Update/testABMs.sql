@@ -1,3 +1,4 @@
+use terminalauto;
 call concesionariaAlta(7,"lo de pepe",@mensaje);
 select @mensaje;
 
@@ -21,3 +22,21 @@ select @mensaje;
 select * from venta;	
 call ventaAlta(1,20419120929,@mensaje);
 select @mensaje;
+
+
+-- BAJAS 
+
+call concesionariaBaja(1,@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call detalleVentaBaja(1,1,@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call insumoBaja(1,@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call proveedorBaja(1,@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call ventaBaja(1,@nResultado,@vMensaje);
+select @nResultado,@vMensaje;

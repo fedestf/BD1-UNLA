@@ -3,7 +3,8 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
-
+create schema if not exists terminalauto;
+use terminalauto;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -70,7 +71,7 @@ CREATE TABLE `detalleventa` (
 
 LOCK TABLES `detalleventa` WRITE;
 /*!40000 ALTER TABLE `detalleventa` DISABLE KEYS */;
-INSERT INTO `detalleventa` VALUES (1,1,50,22,1100,0,NULL),(2,1,50,22,1100,0,NULL),(2,2,50,22,1100,0,NULL),(3,2,50,22,1100,0,NULL),(1,3,2,2,4,0,NULL),(3,3,50,22,1100,0,NULL);
+INSERT INTO `detalleventa` VALUES (1,1,50,22,1100,1,'2019-10-16'),(2,1,50,22,1100,0,NULL),(2,2,50,22,1100,0,NULL),(3,2,50,22,1100,0,NULL),(1,3,2,2,4,0,NULL),(3,3,50,22,1100,0,NULL);
 /*!40000 ALTER TABLE `detalleventa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +371,7 @@ CREATE TABLE `venta` (
   PRIMARY KEY (`idventa`),
   KEY `fk_concesionaria_has_vehiculo_concesionaria1_idx` (`idconcesionaria`),
   CONSTRAINT `fk_concesionaria_has_vehiculo_concesionaria1` FOREIGN KEY (`idconcesionaria`) REFERENCES `concesionaria` (`idconcesionaria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +380,7 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
-INSERT INTO `venta` VALUES (1,'2019-12-12',1,'20419120929',0,NULL),(2,'2014-03-12',2,'20419120929',0,NULL),(3,'2012-11-06',3,'20419120929',0,NULL),(4,'2019-10-13',1,'20419120929',0,NULL);
+INSERT INTO `venta` VALUES (1,'2019-12-12',1,'20419120929',0,NULL),(2,'2014-03-12',2,'20419120929',0,NULL),(3,'2012-11-06',3,'20419120929',0,NULL),(4,'2019-10-13',1,'20419120929',0,NULL),(5,'2019-10-16',1,'20419120929',0,NULL);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -755,7 +756,7 @@ out nResultado int,
 out vMensaje varchar(145))
 BEGIN
 
-if exists(select * from detalleventa where iddetalleVenta=_iddetalleVenta)
+if exists(select * from detalleventa where idventa=_idventa)
 	then 
 	select "No se puede bajar la venta,aún hay Detalles de ventas que la tienen como fk" into vMensaje;
 	set nResultado=-1;
@@ -784,4 +785,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-16 11:47:24
+-- Dump completed on 2019-10-16 13:00:07
