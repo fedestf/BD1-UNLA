@@ -3,8 +3,6 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
-create schema if not exists `terminalauto`;
-use terminalauto;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -566,10 +564,25 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insumoBaja`(
-  in  _idinsumo INT
+  in  _idinsumo INT,
+  out nResultado int,
+  out vMensaje varchar(145)
 )
 BEGIN
-update  insumo set eliminado=true,fechaEliminado=curdate() where idinsumo=_idinsumo;
+
+if exists(select * from insumoEstacion where idinsumo=_idinsumo) or exists(select * from proveedorInsumo where idinsumo=_idinsumo) or exists(select * from pedidoInsumo where idinsumo =_idinsumo)
+	then 
+	select "No se puede bajar el insumo ,aún hay un insumoEstacion,proveedorInsumo o pedidoInsumo que la tienen como fk" into vMensaje;
+	set nResultado=-1;
+	else if exists(select * from insumo where idinsumo=_idinsumo)
+		then
+		update insumo set eliminado=true,fechaEliminado=curdate() where idinsumo=_idinsumo;
+		set nResultado=0;
+		else
+        select "insumo no existente" into vMensaje;
+        set nResultado=-1;
+	end if;
+end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -618,10 +631,25 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proveedorBaja`(
-in _idproveedor int
+in _idproveedor int,
+out nResultado int,
+out vMensaje varchar(145)
 )
 BEGIN
-update proveedor set eliminado=true,fechaEliminado=curdate() where idproveedor=_idproveedor;
+
+if exists(select * from proveedorInsumo where idproveedor=_idproveedor)
+	then 
+	select "No se puede bajar el proveedor,aún hay proveedores insumos que la tienen como fk" into vMensaje;
+	set nResultado=-1;
+	else if exists(select * from proveedor where idproveedor=_idproveedor)
+		then
+		update proveedor set eliminado=true,fechaEliminado=curdate() where idproveedor=_idproveedor;
+		set nResultado=0;
+		else
+        select "proveedor no existente" into vMensaje;
+        set nResultado=-1;
+	end if;
+end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -722,9 +750,24 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ventaBaja`(
-in _idventa int)
+in _idventa int,
+out nResultado int,
+out vMensaje varchar(145))
 BEGIN
-update venta set eliminado=true,fechaEliminado=curdate() where idventa=_idventa;
+
+if exists(select * from detalleventa where iddetalleVenta=_iddetalleVenta)
+	then 
+	select "No se puede bajar la venta,aún hay Detalles de ventas que la tienen como fk" into vMensaje;
+	set nResultado=-1;
+	else if exists(select * from venta where idventa=_idventa)
+		then
+		update venta set eliminado=true,fechaEliminado=curdate() where idventa=_idventa;
+		set nResultado=0;
+		else
+        select "Venta no existente" into vMensaje;
+        set nResultado=-1;
+	end if;
+end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -741,4 +784,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-16  0:47:04
+-- Dump completed on 2019-10-16 11:47:24
