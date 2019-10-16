@@ -3,10 +3,8 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
-CREATE SCHEMA IF NOT EXISTS `terminalauto` DEFAULT CHARACTER SET utf8 ;
-USE `terminalauto` ;
-
-
+create schema if not exists `terminalauto`;
+use terminalauto;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -58,7 +56,7 @@ CREATE TABLE `detalleventa` (
   `cantidad` int(11) NOT NULL,
   `precioUnitario` double NOT NULL,
   `precioFinal` double NOT NULL,
-  `elimnado` tinyint(1) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
   `fechaEliminado` date DEFAULT NULL,
   PRIMARY KEY (`idmodelo`,`idventa`),
   KEY `fk_venta_has_modelo_modelo1_idx` (`idmodelo`),
@@ -432,10 +430,24 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `concesionariaBaja`(
-in _idconcesionaria int
+in _idconcesionaria int,
+out nResultado int,
+out vMensaje varchar(145)
 )
 BEGIN
-update concesionaria set eliminado=true,fechaEliminado=curdate() where idconcesionaria=_idconcesionaria;
+if exists(select * from venta where idconcesionaria=_idconcesionaria)
+	then 
+	select "No se puede bajar la concesionaria,aún hay ventas que la tienen como fk" into vMensaje;
+	set nResultado=-1;
+	else if exists(select * from concesionaria where idconcesionaria=_idconcesionaria)
+		then
+		update concesionaria set eliminado=true,fechaEliminado=curdate() where idconcesionaria=_idconcesionaria;
+		set nResultado=0;
+		else
+        select "Concesionaria no existente" into vMensaje;
+        set nResultado=-1;
+	end if;
+end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -487,9 +499,26 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detalleVentaBaja`(
-in _idventa int)
+in _idventa int,
+in _idmodelo int, -- en realidad con id venta estariamos pero el der tiene como pk compuesta ambas(supongo que esta mal pero lo dejo así)
+out nResultado int,
+out vMensaje varchar(145))
 BEGIN
-update detalleVenta set eliminado=true,fechaEliminado=curdate() where idventa=_idventa;
+
+if exists(select * from vehiculo where idventa=_idventa and idmodelo=_idmodelo)
+	then 
+	select "No se puede bajar el detalle venta,aún hay vehiculos que la tienen como fk" into vMensaje;
+	set nResultado=-1;
+	else if exists(select * from detalleVenta where idventa=_idventa and idmodelo=_idmodelo)
+		then
+		update detalleVenta set eliminado=true,fechaEliminado=curdate() where idventa=_idventa and idmodelo=_idmodelo;
+		set nResultado=0;
+		else
+        select "Detalle venta no existente" into vMensaje;
+        set nResultado=-1;
+	end if;
+end if;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -712,4 +741,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-13 22:39:49
+-- Dump completed on 2019-10-16  0:47:04
