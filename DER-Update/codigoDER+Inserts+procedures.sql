@@ -3,6 +3,7 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
+drop schema terminalauto;
 create schema if not exists terminalauto;
 use terminalauto;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
