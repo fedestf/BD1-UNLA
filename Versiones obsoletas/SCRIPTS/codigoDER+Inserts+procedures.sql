@@ -3,7 +3,7 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
-drop schema terminalauto;
+drop schema if exists terminalauto;
 create schema if not exists terminalauto;
 use terminalauto;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -222,7 +222,7 @@ DROP TABLE IF EXISTS `modelo`;
 CREATE TABLE `modelo` (
   `idmodelo` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `precio` float NOT NULL,
+  `precio` double NOT NULL,
   PRIMARY KEY (`idmodelo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -233,7 +233,7 @@ CREATE TABLE `modelo` (
 
 LOCK TABLES `modelo` WRITE;
 /*!40000 ALTER TABLE `modelo` DISABLE KEYS */;
-INSERT INTO `modelo` VALUES (1,'Acuatico',585.546),(2,'Afibio',458.659),(3,'4x4',800.325);
+INSERT INTO `modelo` VALUES (1,'Acuatico',500.000),(2,'Afibio',450.000),(3,'4x4',800.000);
 /*!40000 ALTER TABLE `modelo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,9 +333,9 @@ CREATE TABLE `vehiculo` (
   `numChasis` varchar(20) NOT NULL,
   `idmodelo` int(11) NOT NULL,
   `idventa` int(11) NOT NULL,
-  `idestacion` int(11) NOT NULL,
+  `idestacion` int(11),
   `fechaInicio` date NOT NULL,
-  `fechaFin` date NOT NULL,
+  `fechaFin` date,
   PRIMARY KEY (`numChasis`),
   UNIQUE KEY `numChasis_UNIQUE` (`numChasis`),
   KEY `fk_vehiculo_detalleVenta1_idx` (`idmodelo`,`idventa`),

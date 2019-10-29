@@ -40,3 +40,15 @@ select @nResultado,@vMensaje;
 
 call ventaBaja(1,@nResultado,@vMensaje);
 select @nResultado,@vMensaje;
+
+call generadorPatente(@patente);
+select @patente;
+
+select * from modelo;
+select * from vehiculo;
+select * from venta;
+select * from detalleventa;
+select * from concesionaria;
+call pedidoVehiculos(3, 20369825551, 3, 4);
+
+SET foreign_key_checks = 0;
