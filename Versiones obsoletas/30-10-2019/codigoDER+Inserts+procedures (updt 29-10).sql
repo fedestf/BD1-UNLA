@@ -88,7 +88,7 @@ CREATE TABLE `estacion` (
   `idestacion` int(11) NOT NULL,
   `idlineaDeMontaje` int(11) NOT NULL,
   `tarea` varchar(45) NOT NULL,
-  PRIMARY KEY (`idestacion`),
+  PRIMARY KEY (`idestacion`, `idlineaDeMontaje`),
   KEY `fk_estacion_lineaDeMontaje1_idx` (`idlineaDeMontaje`),
   CONSTRAINT `fk_estacion_lineaDeMontaje1` FOREIGN KEY (`idlineaDeMontaje`) REFERENCES `lineademontaje` (`idlineaDeMontaje`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -113,6 +113,7 @@ DROP TABLE IF EXISTS `estacionauto`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estacionauto` (
   `idestacion` int(11) NOT NULL,
+  `idlineaDeMontaje` int(11) NOT NULL,
   `numChasis` varchar(20) NOT NULL,
   `fechaIngreso` date NOT NULL,
   `fechaSalida` date NOT NULL,
@@ -120,6 +121,7 @@ CREATE TABLE `estacionauto` (
   KEY `fk_estacion_has_vehiculo_vehiculo1_idx` (`numChasis`),
   KEY `fk_estacion_has_vehiculo_estacion1_idx` (`idestacion`),
   CONSTRAINT `fk_estacion_has_vehiculo_estacion1` FOREIGN KEY (`idestacion`) REFERENCES `estacion` (`idestacion`),
+  CONSTRAINT `fk_estacion_has_vehiculo_lineaDeMontaje1` FOREIGN KEY (`idlineaDeMontaje`) REFERENCES `estacion` (`idlineaDeMontaje`),
   CONSTRAINT `fk_estacion_has_vehiculo_vehiculo1` FOREIGN KEY (`numChasis`) REFERENCES `vehiculo` (`numChasis`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -130,6 +132,7 @@ CREATE TABLE `estacionauto` (
 
 LOCK TABLES `estacionauto` WRITE;
 /*!40000 ALTER TABLE `estacionauto` DISABLE KEYS */;
+INSERT INTO `estacionauto` VALUES (1,'Cable',0,NULL),(2,'Combustible',0,NULL),(3,'Pintura',0,NULL),(4,'ruedas',0,NULL);
 /*!40000 ALTER TABLE `estacionauto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,7 +327,7 @@ INSERT INTO `proveedorinsumo` VALUES (1,1,0,NULL);
 UNLOCK TABLES;
 
 --
--- Table structure for table `vehiculo`
+-- Table structure for table `vehiculovehiculo`
 --
 
 DROP TABLE IF EXISTS `vehiculo`;

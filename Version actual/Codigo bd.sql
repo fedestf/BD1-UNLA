@@ -61,7 +61,7 @@ CREATE TABLE estacion (
     idestacion INT(11) NOT NULL,
     idlineaDeMontaje INT(11) NOT NULL,
     tarea VARCHAR(45) NOT NULL,
-    PRIMARY KEY (idestacion),
+    PRIMARY KEY (idestacion, idlineaDeMontaje),
     FOREIGN KEY (idlineaDeMontaje)
         REFERENCES lineademontaje (idlineaDeMontaje)
 );
@@ -84,10 +84,11 @@ CREATE TABLE vehiculo (
 DROP TABLE IF EXISTS estacionauto;
 CREATE TABLE estacionauto (
     idestacion INT(11) NOT NULL,
+    idlineaDeMontaje INT NOT NULL,
     numChasis VARCHAR(20) NOT NULL,
     fechaIngreso DATE NOT NULL,
     fechaSalida DATE NOT NULL,
-    PRIMARY KEY (numChasis , idestacion),
+    PRIMARY KEY (numChasis , idestacion, idlineaDeMontaje),
     FOREIGN KEY (idestacion)
         REFERENCES estacion (idestacion),
     FOREIGN KEY (numChasis)

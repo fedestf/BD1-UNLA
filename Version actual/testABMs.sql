@@ -49,6 +49,9 @@ select * from vehiculo;
 select * from venta;
 select * from detalleventa;
 select * from concesionaria;
-call pedidoVehiculos(3, 20369825551, 3, 4);
+call pedidoVehiculos(3, 20369825551, 2, 4);
 
+-- Desactiva la comprobacion de FK y evita el error al actualizar
 SET foreign_key_checks = 0;
+
+SELECT * FROM terminalauto.estacion;
