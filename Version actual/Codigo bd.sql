@@ -1,4 +1,4 @@
-drop schema terminalauto;
+drop schema if exists terminalauto;
 create schema terminalauto;
 use terminalauto;
 
@@ -76,9 +76,9 @@ CREATE TABLE vehiculo (
     PRIMARY KEY (numChasis),
     UNIQUE KEY numChasis_UNIQUE (numChasis),
     FOREIGN KEY (idmodelo , idventa)
-        REFERENCES detalleventa (idmodelo , idventa),
-    FOREIGN KEY (idestacion)
-        REFERENCES estacion (idestacion)
+        REFERENCES detalleventa (idmodelo , idventa)
+    -- FOREIGN KEY (idestacion)
+    --    REFERENCES estacion (idestacion)
 );
 
 DROP TABLE IF EXISTS estacionauto;

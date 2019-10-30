@@ -1,11 +1,3 @@
-call fabricaAlta(2,'Roberto');
-call fabricaMod(2,'Rodriguez');
-call fabricaBaja('Rodriguez');
-SELECT 
-    *
-FROM
-    fabrica;
-
 call proveedorAlta(4, "Augusto Cesar");
 call proveedorMod(4, "Carlos Carlin");
 call proveedorBaja("Carlos Carlin");

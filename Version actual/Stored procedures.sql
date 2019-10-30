@@ -3,7 +3,7 @@
 -- Host: localhost    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.18
-
+use terminalauto;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -138,7 +138,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detalleVentaBaja`(
 in _idventa int,
-in _idmodelo int, -- en realidad con id venta estariamos pero el der tiene como pk compuesta ambas(supongo que esta mal pero lo dejo así)
+in _idmodelo int, 
 out nResultado int,
 out vMensaje varchar(145))
 BEGIN
@@ -452,7 +452,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `vehiculoAlta`(
 	in _numChasis varchar(45),
 	in _idmodelo int,
 	in _idventa int,
-    in _idestacion int,
+    -- in _idestacion int,
     in _fechaInicio date,
     out cMensaje varchar(145)
 )
@@ -462,7 +462,7 @@ if not exists (select * from vehiculo v where v.numChasis = _numChasis) then
 	_numChasis,
 	_idmodelo,
     _idventa,
-    _idestacion,
+    -- _idestacion,
     _fechaInicio,
     null
 	);

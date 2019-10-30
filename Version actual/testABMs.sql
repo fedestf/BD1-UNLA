@@ -1,13 +1,15 @@
 use terminalauto;
+
+select * from concesionaria;
 call concesionariaAlta(7,"lo de pepe",@mensaje);
 select @mensaje;
 
 -- idventa,idmodelo,cantidad,precioUnitario,_mensaje
+select * from detalleVenta;
 call detalleVentaAlta(3,3,50,22,@mensaje2);
 select @mensaje2;
-select * from detalleVenta;
 
-
+select * from insumo;
 call insumoAlta(4,"ruedas",@mensaje);
 select @mensaje;
 
