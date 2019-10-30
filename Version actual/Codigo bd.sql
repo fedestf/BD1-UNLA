@@ -87,7 +87,7 @@ CREATE TABLE estacionauto (
     idlineaDeMontaje INT NOT NULL,
     numChasis VARCHAR(20) NOT NULL,
     fechaIngreso DATE NOT NULL,
-    fechaSalida DATE NOT NULL,
+    fechaSalida DATE default NULL,
     PRIMARY KEY (numChasis , idestacion, idlineaDeMontaje),
     FOREIGN KEY (idestacion)
         REFERENCES estacion (idestacion),

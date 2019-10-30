@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: terminalauto
+-- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
--- Server version	8.0.18
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-
 
 --
 -- Dumping routines for database 'terminalauto'
@@ -163,6 +155,46 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `estacionautoAlta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `estacionautoAlta`(
+	in _idestacion int,
+    in _idlineaDeMontaje int,
+    in _numChasis varchar(20),
+    in _fechaEntrada date,
+    out nResultado tinyint,
+    out cMensaje varchar(145))
+BEGIN
+set cMensaje = null;
+set nResultado = 0;
+
+if not exists(select * from estacionauto ea where 
+				ea.idestacion = _idestacion and ea.idlineaDeMontaje = _idlineaDeMontaje and
+					ea.numChasis = _numChasis) then
+                    
+	insert into estacionauto values 
+		(_idestacion, _idlineaDeMontaje, _numChasis, _fechaEntrada, null);
+else
+	set nResultado = -1;
+    select "El elemento a ingresar ya existe en la tabla" into cMensaje;
+    
+end if;
+
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `generadorPatente` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -189,6 +221,58 @@ while (patente is null) or exists(select * from vehiculo where numChasis = paten
       FLOOR(RAND() * 10)
 	  ) into patente;
 end while;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `inicioFabricacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `inicioFabricacion`(
+	in _numChasis varchar(20),
+    out nResultado tinyint,
+    out cMensaje varchar(150)
+)
+BEGIN
+declare _idmodelo int;
+
+set nResultado = 0;
+set cMensaje = NULL;
+
+
+if not exists 
+	(select ea.numChasis, ea.fechaSalida from estacionauto ea
+		inner join vehiculo v on v.numChasis = ea.numChasis
+			where ea.idlineaDeMontaje = (select v2.idmodelo from vehiculo v2 where v2.numChasis = _numChasis) 
+				 and ea.idestacion = 1 and ea.fechaSalida is null
+	) then
+		set _idmodelo = (select idmodelo from vehiculo v where v.numChasis = _numChasis);
+		call estacionautoAlta(
+			1,
+			_idmodelo,
+            _numChasis,
+            current_date(),
+			@resultado,
+			@mensaje);
+		
+		update vehiculo v set v.idestacion = 1
+			where v.numChasis = _numChasis;
+	else
+    set nResultado = -1;
+    select "La estacion 1 de esa linea de montaje se encuentra ocupada" into cMensaje;
+
+end if;
+
 
 END ;;
 DELIMITER ;
@@ -541,7 +625,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -552,4 +635,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-30 11:17:37
+-- Dump completed on 2019-10-30 17:05:57
