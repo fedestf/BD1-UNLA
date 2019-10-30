@@ -70,7 +70,7 @@ CREATE TABLE vehiculo (
     numChasis VARCHAR(20) NOT NULL,
     idmodelo INT(11) NOT NULL,
     idventa INT(11) NOT NULL,
-   -- idestacion INT(11) DEFAULT NULL,
+    idestacion INT(11) DEFAULT NULL,
     fechaInicio DATE NOT NULL,
     fechaFin DATE DEFAULT NULL,
     PRIMARY KEY (numChasis),
@@ -87,7 +87,7 @@ CREATE TABLE estacionauto (
     idlineaDeMontaje INT NOT NULL,
     numChasis VARCHAR(20) NOT NULL,
     fechaIngreso DATE NOT NULL,
-    fechaSalida DATE NOT NULL,
+    fechaSalida DATE default NULL,
     PRIMARY KEY (numChasis , idestacion, idlineaDeMontaje),
     FOREIGN KEY (idestacion)
         REFERENCES estacion (idestacion),

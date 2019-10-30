@@ -69,7 +69,7 @@ LOCK TABLES `estacionauto` WRITE;
 /*!40000 ALTER TABLE `estacionauto` DISABLE KEYS */;
 insert into estacionauto values
 -- modelo1 linea1:  estacion 1 2 3 4 5
-	-- venta 2
+	-- venta 2 
 (1,1,'M1-01','2014-03-12','2014-04-13'),
 (2,1,'M1-01','2014-04-14','2014-05-24'),
 (3,1,'M1-01','2014-05-25','2014-07-04'),
