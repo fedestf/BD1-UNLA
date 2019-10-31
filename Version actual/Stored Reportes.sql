@@ -26,6 +26,17 @@ call reporteVehiculosPorVenta(1);
 call reporteVehiculosPorVenta(2);
 call reporteVehiculosPorVenta(3);
 call reporteVehiculosPorVenta(6);
+call reporteVehiculosPorVenta(7);
 $$
 
 drop procedure reporteVehiculosPorVenta;
+
+
+call inicioFabricacion('MIE-925',@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call inicioFabricacion('QTW-114',@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
+
+call inicioFabricacion('UGT-266',@nResultado,@vMensaje);
+select @nResultado,@vMensaje;
