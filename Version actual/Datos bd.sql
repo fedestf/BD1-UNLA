@@ -99,7 +99,7 @@ INSERT INTO insumoEstacion VALUES
 (4,3,3,11),
 (5,1,2,35),
 (5,2,2,37),
-(5,3,2,40),
+(5,3,2,40);
 
 INSERT INTO modelo VALUES 
 (1,'Acuatico',500),
