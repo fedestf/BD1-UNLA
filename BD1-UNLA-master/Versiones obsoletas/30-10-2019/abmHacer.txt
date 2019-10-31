@@ -1,0 +1,13 @@
+ABM DE :
+
+insumo ,proveedor , proveedorinsumo, concesionaria , venta,detalleventa
+
+falta mod:
+insumo
+proveedor
+proveedorInsumo
+concesionaria 
+venta
+detalleVenta
+
+

@@ -1,0 +1,314 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`proveedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`proveedor` (
+  `idproveedor` INT NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `eliminado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idproveedor`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`modelo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`modelo` (
+  `idmodelo` INT NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `precio` FLOAT NOT NULL,
+  PRIMARY KEY (`idmodelo`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`lineaDeMontaje`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`lineaDeMontaje` (
+  `idlineaDeMontaje` INT NOT NULL,
+  `idmodelo` INT NOT NULL,
+  PRIMARY KEY (`idlineaDeMontaje`),
+  INDEX `fk_lineaDeMontaje_modelo1_idx` (`idmodelo` ASC) VISIBLE,
+  CONSTRAINT `fk_lineaDeMontaje_modelo1`
+    FOREIGN KEY (`idmodelo`)
+    REFERENCES `mydb`.`modelo` (`idmodelo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`estacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`estacion` (
+  `idestacion` INT NOT NULL,
+  `idlineaDeMontaje` INT NOT NULL,
+  `tarea` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idestacion`),
+  INDEX `fk_estacion_lineaDeMontaje1_idx` (`idlineaDeMontaje` ASC) VISIBLE,
+  CONSTRAINT `fk_estacion_lineaDeMontaje1`
+    FOREIGN KEY (`idlineaDeMontaje`)
+    REFERENCES `mydb`.`lineaDeMontaje` (`idlineaDeMontaje`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`concesionaria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`concesionaria` (
+  `idconcesionaria` INT NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `eliminado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idconcesionaria`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`venta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`venta` (
+  `idventa` INT NULL AUTO_INCREMENT,
+  `fecha` DATE NOT NULL,
+  `idconcesionaria` INT NOT NULL,
+  `cuit` VARCHAR(45) NOT NULL,
+  `eliminado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idventa`),
+  INDEX `fk_concesionaria_has_vehiculo_concesionaria1_idx` (`idconcesionaria` ASC) VISIBLE,
+  CONSTRAINT `fk_concesionaria_has_vehiculo_concesionaria1`
+    FOREIGN KEY (`idconcesionaria`)
+    REFERENCES `mydb`.`concesionaria` (`idconcesionaria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`detalleVenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`detalleVenta` (
+  `idventa` INT NOT NULL,
+  `idmodelo` INT NOT NULL,
+  `cantidad` INT NOT NULL,
+  `precioUnitario` DOUBLE NOT NULL,
+  `precioFinal` DOUBLE NOT NULL,
+  `elimnado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idmodelo`, `idventa`),
+  INDEX `fk_venta_has_modelo_modelo1_idx` (`idmodelo` ASC) VISIBLE,
+  INDEX `fk_venta_has_modelo_venta1_idx` (`idventa` ASC) VISIBLE,
+  CONSTRAINT `fk_venta_has_modelo_venta1`
+    FOREIGN KEY (`idventa`)
+    REFERENCES `mydb`.`venta` (`idventa`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_venta_has_modelo_modelo1`
+    FOREIGN KEY (`idmodelo`)
+    REFERENCES `mydb`.`modelo` (`idmodelo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`vehiculo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`vehiculo` (
+  `numChasis` VARCHAR(20) NOT NULL,
+  `idmodelo` INT NOT NULL,
+  `idventa` INT NOT NULL,
+  `idestacion` INT NOT NULL,
+  `fechaInicio` DATE NOT NULL,
+  `fechaFin` DATE NOT NULL,
+  PRIMARY KEY (`numChasis`),
+  UNIQUE INDEX `numChasis_UNIQUE` (`numChasis` ASC) VISIBLE,
+  INDEX `fk_vehiculo_detalleVenta1_idx` (`idmodelo` ASC, `idventa` ASC) VISIBLE,
+  INDEX `fk_vehiculo_estacion1_idx` (`idestacion` ASC) VISIBLE,
+  CONSTRAINT `fk_vehiculo_detalleVenta1`
+    FOREIGN KEY (`idmodelo` , `idventa`)
+    REFERENCES `mydb`.`detalleVenta` (`idmodelo` , `idventa`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_vehiculo_estacion1`
+    FOREIGN KEY (`idestacion`)
+    REFERENCES `mydb`.`estacion` (`idestacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`insumo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`insumo` (
+  `idinsumo` INT NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `eliminado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idinsumo`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`pedidoInsumo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`pedidoInsumo` (
+  `idpedidoInsu` INT NULL AUTO_INCREMENT,
+  `idinsumo` INT NOT NULL,
+  `fecha` DATE NOT NULL,
+  `precio` FLOAT NOT NULL,
+  `cantidad` INT NOT NULL,
+  INDEX `fk_proveedor_has_insumo_insumo1_idx` (`idinsumo` ASC) VISIBLE,
+  PRIMARY KEY (`idpedidoInsu`),
+  CONSTRAINT `fk_proveedor_has_insumo_insumo1`
+    FOREIGN KEY (`idinsumo`)
+    REFERENCES `mydb`.`insumo` (`idinsumo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`estacionAuto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`estacionAuto` (
+  `idestacion` INT NOT NULL,
+  `numChasis` VARCHAR(20) NOT NULL,
+  `fechaIngreso` DATE NOT NULL,
+  `fechaSalida` DATE NOT NULL,
+  INDEX `fk_estacion_has_vehiculo_vehiculo1_idx` (`numChasis` ASC) VISIBLE,
+  INDEX `fk_estacion_has_vehiculo_estacion1_idx` (`idestacion` ASC) VISIBLE,
+  PRIMARY KEY (`numChasis`, `idestacion`),
+  CONSTRAINT `fk_estacion_has_vehiculo_estacion1`
+    FOREIGN KEY (`idestacion`)
+    REFERENCES `mydb`.`estacion` (`idestacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_estacion_has_vehiculo_vehiculo1`
+    FOREIGN KEY (`numChasis`)
+    REFERENCES `mydb`.`vehiculo` (`numChasis`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`insumoEstacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`insumoEstacion` (
+  `idestacion` INT NOT NULL,
+  `idinsumo` INT NOT NULL,
+  `cantidad` DOUBLE NULL,
+  PRIMARY KEY (`idestacion`, `idinsumo`),
+  INDEX `fk_estacion_has_insumo_insumo1_idx` (`idinsumo` ASC) VISIBLE,
+  INDEX `fk_estacion_has_insumo_estacion1_idx` (`idestacion` ASC) VISIBLE,
+  CONSTRAINT `fk_estacion_has_insumo_estacion1`
+    FOREIGN KEY (`idestacion`)
+    REFERENCES `mydb`.`estacion` (`idestacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_estacion_has_insumo_insumo1`
+    FOREIGN KEY (`idinsumo`)
+    REFERENCES `mydb`.`insumo` (`idinsumo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`proveedorInsumo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`proveedorInsumo` (
+  `idinsumo` INT NOT NULL,
+  `idproveedor` INT NOT NULL,
+  `eliminado` TINYINT(1) NOT NULL,
+  `fechaEliminado` DATE NULL,
+  PRIMARY KEY (`idinsumo`, `idproveedor`),
+  INDEX `fk_insumo_has_proveedor_proveedor1_idx` (`idproveedor` ASC) VISIBLE,
+  INDEX `fk_insumo_has_proveedor_insumo1_idx` (`idinsumo` ASC) VISIBLE,
+  CONSTRAINT `fk_insumo_has_proveedor_insumo1`
+    FOREIGN KEY (`idinsumo`)
+    REFERENCES `mydb`.`insumo` (`idinsumo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_insumo_has_proveedor_proveedor1`
+    FOREIGN KEY (`idproveedor`)
+    REFERENCES `mydb`.`proveedor` (`idproveedor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- procedure fabricaAlta
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `mydb`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaAlta`(
+in _idfabrica int,
+in _nombre varchar(45)
+)
+BEGIN
+ insert into fabrica (idfabrica,nombre) values(_idfabrica,_nombre);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure fabricaBaja
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `mydb`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaBaja`(
+
+	in _nombre varchar(45)
+)
+BEGIN
+	delete from fabrica  where fabrica.nombre=_nombre;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure fabricaMod
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `mydb`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fabricaMod`(
+in _idfabrica int,
+in _nombre varchar(45)
+)
+BEGIN
+update fabrica SET nombre=_nombre
+where idfabrica=_idfabrica;
+
+END$$
+
+DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
