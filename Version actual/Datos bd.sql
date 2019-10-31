@@ -78,18 +78,28 @@ INSERT INTO insumo VALUES
 (5,'asientos',0,NULL),
 (6,'autopartes',0,NULL);
 
-INSERT INTO insumoEstacion VALUES
--- idestacion , idinsumo,cantidad
-(1,6,20),
-(2,5,4),
-(3,1,100),
-(4,3,10),
-(5,2,38);
-
 INSERT INTO lineademontaje VALUES 
 (1,1),
 (2,2),
 (3,3);
+
+INSERT INTO insumoEstacion VALUES
+-- idestacion,idlineademontaje, idinsumo,cantidad
+(1,1,6,23),
+(1,2,6,21),
+(1,3,6,20),
+(2,1,5,4),
+(2,2,5,4),
+(2,3,5,4),
+(3,1,1,80),
+(3,2,1,105),
+(3,3,1,98),
+(4,1,3,15),
+(4,2,3,8),
+(4,3,3,11),
+(5,1,2,35),
+(5,2,2,37),
+(5,3,2,40),
 
 INSERT INTO modelo VALUES 
 (1,'Acuatico',500),
