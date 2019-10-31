@@ -74,7 +74,17 @@ INSERT INTO insumo VALUES
 (1,'Cable',0,NULL),
 (2,'Combustible',0,NULL),
 (3,'Pintura',0,NULL),
-(4,'ruedas',0,NULL);
+(4,'ruedas',0,NULL),
+(5,'asientos',0,NULL),
+(6,'autopartes',0,NULL);
+
+INSERT INTO insumoEstacion VALUES
+-- idestacion , idinsumo,cantidad
+(1,6,20),
+(2,5,4),
+(3,1,100),
+(4,3,10),
+(5,2,38);
 
 INSERT INTO lineademontaje VALUES 
 (1,1),
