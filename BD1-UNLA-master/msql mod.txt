@@ -1,0 +1,302 @@
+call terminalauto.ventaMod(2, 1, 1, 3, '2019-12-19');
+Select *from venta;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ventaMod`
+(
+
+in _idventa int,
+in _idconcesionaria int,
+
+in _idmodelo int,
+in _cantidad int,
+
+in  _fecha varchar(45)
+
+
+)
+
+BEGIN 
+update venta set
+idventa=_idventa,
+
+idconcesionaria=_idconcesionaria,
+
+idmodelo=_idmodelo,
+cantidad=_cantidad,
+
+fecha=_fecha
+where idventa=_idventa;
+
+
+
+END
+
+
+
+CREATE PROCEDURE `ventaMod`(
+
+
+in _idventa int,
+in _idconcesionaria int,
+in _idmodelo int,
+
+in _cantidad int,
+in  _fecha varchar(45)
+
+
+)
+
+BEGIN 
+
+update venta set
+idventa=_idventa,
+
+idconcesionaria=_idconcesionaria,
+idmodelo=_idmodelo,
+cantidad=_cantidad
+,
+fecha=_fecha 
+where idventa=_idventa;
+
+
+
+END
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+call terminalauto.lineademontajeMod(1, 1);
+
+select *from lineadeMontaje;
+
+
+
+
+CREATE PROCEDURE `lineademontajeMod` (
+
+
+in _idlineaDeMontaje int,
+
+in _idmodelo int
+
+)
+
+BEGIN
+ 
+update lineadeMontaje set idmodelo=_idmodelo
+
+where idlineadeMontaje=_idlineadeMontaje;
+
+END
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `lineademontajeMod`(
+
+
+in _idlineaDeMontaje int,
+in _idmodelo int
+)
+
+BEGIN
+
+update lineadeMontaje set idmodelo=_idmodelo
+
+where idlineadeMontaje=_idlineadeMontaje;
+
+END
+--------------------------------------------------------------------------------------------------------------------
+call terminalauto.pedidoAutopartesBaja(3);
+
+select *from pedidoautopartes;
+
+CREATE PROCEDURE pedidoAutopartesBaja(
+
+
+in _idpedidoAutop int
+
+
+)
+
+BEGIN
+
+delete from pedidoAutopartes where
+
+idpedidoAutop=_idpedidoAutop;
+
+END
+
+
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoAutopartesBaja`(
+
+
+in _idpedidoAutop int
+
+
+)
+
+BEGIN 
+
+delete from pedidoAutopartes where
+
+idpedidoAutop=_idpedidoAutop;
+
+END
+
+-------------------------------------------------------------------------------------------------------------
+call terminalauto.pedidoAutopartesMod(2, 1, 1, '2019-09-19', 1600.00, 3);
+
+select *from pedidoAutopartes;
+
+
+
+CREATE PROCEDURE `pedidoAutopartesMod` (
+
+
+in _idpedidoAutop int,
+
+in _idautoparte int,
+
+in _idproveedor int,
+
+in _fecha date,
+
+in _precio float,
+
+in _cantidad int
+
+)
+
+BEGIN
+
+update pedidoAutopartes set 
+
+idpedidoAutop=_idpedidoAutop,
+
+idautoparte=_idautoparte,
+
+idproveedor=_idproveedor,
+fecha=_fecha,
+
+precio=_precio,
+
+cantidad=_cantidad where
+ 
+idpedidoAutop=_idpedidoAutop;
+
+END
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoAutopartesMod`(
+
+
+in _idpedidoAutop int,
+
+in _idautoparte int,
+
+in _idproveedor int,
+
+in _fecha date,
+
+in _precio float,
+
+in _cantidad int
+)
+
+BEGIN
+
+update pedidoAutopartes set 
+
+idpedidoAutop=_idpedidoAutop,
+
+idautoparte=_idautoparte,
+
+idproveedor=_idproveedor,
+
+fecha=_fecha,
+
+precio=_precio,
+
+cantidad=_cantidad where
+
+idpedidoAutop=_idpedidoAutop;
+
+END
+
+-------------------------------------------------------------------------------------------------------
+call terminalauto.pedidoinsumoMod(2, 1, 1, '2019-09-28', 1500, 3);
+
+select *from pedidoinsumo;
+
+
+
+
+
+CREATE PROCEDURE `pedidoinsumoMod` (
+
+in _idpedidoInsu int,
+in _idinsumo int,
+
+in _idproveedor int,
+in _fecha date,
+
+in _precio float,
+in _cantidad int
+
+ 
+)
+
+BEGIN
+
+update pedidoinsumo set
+idpedidoInsu=_idpedidoInsu,
+
+idinsumo=_idinsumo,
+idproveedor=_idproveedor,
+
+fecha=_fecha,
+precio=_precio,
+cantidad=_cantidad
+ where
+ idpedidoInsu=_idpedidoInsu;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pedidoinsumoMod`(
+
+in _idpedidoInsu int,
+in _idinsumo int,
+in _idproveedor int,
+
+in _fecha date,
+in _precio float,
+in _cantidad int
+
+ 
+)
+BEGIN
+
+update pedidoinsumo set
+idpedidoInsu=_idpedidoInsu,
+
+idinsumo=_idinsumo,
+idproveedor=_idproveedor,
+
+fecha=_fecha,
+precio=_precio,
+
+cantidad=_cantidad where
+
+idpedidoInsu=_idpedidoInsu;
+
+
+END
+
+
+
+
+
+
