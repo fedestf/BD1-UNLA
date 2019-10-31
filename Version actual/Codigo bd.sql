@@ -115,10 +115,12 @@ DROP TABLE IF EXISTS `insumoestacion`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `insumoestacion` (
   `idestacion` int(11) NOT NULL,
+  `idlineaDeMontaje` int(11) NOT NULL,
   `idinsumo` int(11) NOT NULL,
   `cantidad` double DEFAULT NULL,
-  PRIMARY KEY (`idestacion`,`idinsumo`),
+  PRIMARY KEY (`idestacion`,`idlineaDeMontaje`,`idinsumo`),
   KEY `idinsumo` (`idinsumo`),
+  KEY `insumoestacion_ibfk_2_idx` (`idlineaDeMontaje`),
   CONSTRAINT `insumoestacion_ibfk_1` FOREIGN KEY (`idestacion`) REFERENCES `estacion` (`idestacion`),
   CONSTRAINT `insumoestacion_ibfk_2` FOREIGN KEY (`idinsumo`) REFERENCES `insumo` (`idinsumo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -259,4 +261,4 @@ CREATE TABLE `venta` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-31 18:40:58
+-- Dump completed on 2019-10-31 19:04:53
