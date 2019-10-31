@@ -2,13 +2,8 @@
 --
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
-
--- Server version	8.0.18
-use terminalauto;
-
 -- Server version	8.0.17
 
--- >>>>>>> 722c4404cb3965afb65cc4229f36d598c7540852
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -23,6 +18,82 @@ use terminalauto;
 --
 -- Dumping routines for database 'terminalauto'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `avanceEstacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `avanceEstacion`(
+	in _numChasis varchar(20),
+    out nResultado tinyint,
+    out cMensaje varchar(150)
+)
+BEGIN
+declare _idmodelo int;
+
+set nResultado = 0;
+set cMensaje = NULL;
+
+if ((select v.idestacion from vehiculo v where v.numChasis = _numChasis) = 
+		(select max(e.idestacion) from estacion e
+			inner join estacionauto ea on e.idestacion = ea.idestacion and e.idlineaDeMontaje = ea.idlineaDeMontaje
+            inner join vehiculo v on v.numChasis = ea.numChasis
+            where v.idmodelo = (select v2.idmodelo from vehiculo v2 
+									where v2.numChasis = _numChasis) ))
+	then
+    
+		update estacionauto ea set ea.fechaSalida = current_date()
+			where ea.numChasis = _numChasis and 
+					ea.idestacion = (select v.idestacion from vehiculo v where v.numChasis = _numChasis) and
+                    ea.idlineaDeMontaje = (select v.idmodelo from vehiculo v where v.numChasis = _numChasis);
+		update vehiculo v set 
+			v.idestacion = null,
+            v.fechaFin = current_date()
+				where v.numChasis = _numChasis;
+
+	else
+		if not exists (
+			select ea.numChasis, ea.fechaSalida from estacionauto ea
+				inner join vehiculo v on v.numChasis = ea.numChasis
+					where ea.idlineaDeMontaje = (select v2.idmodelo from vehiculo v2 where v2.numChasis = _numChasis) 
+						and ea.fechaSalida is null and ea.idestacion = (v.idestacion + 1) 
+		) then
+			update estacionauto ea set
+				ea.fechaSalida = current_date()
+					where ea.numChasis = _numChasis and
+						ea.idestacion = (select v.idestacion from vehiculo v where v.numChasis = _numChasis);
+                                                		
+            update vehiculo v set 
+				v.idestacion = v.idestacion + 1
+					where v.numChasis = _numChasis;
+                    
+			call estacionautoAlta(
+				(select v.idestacion from vehiculo v where v.numChasis = _numChasis),
+                (select v.idmodelo from vehiculo v where v.numChasis = _numChasis),
+                _numChasis,
+                current_date(),
+				@resultado,
+                @mensaje
+            );
+		else
+        
+		set nResultado = -1;
+		select "La estacion solicitada de esa linea de montaje se encuentra ocupada" into cMensaje;
+			
+		
+		end if;
+end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `concesionariaAlta` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -408,6 +479,41 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `promedioConstruccion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `promedioConstruccion`(
+	in _idlineaDeMontaje int,	
+    out nResultado tinyint,
+    out cMensaje varchar(145))
+BEGIN
+set cMensaje = null;
+set nResultado = 0;
+
+if (_idlineaDeMontaje>3 or _idlineaDeMontaje < 1 ) then
+
+set nResultado = -1;
+select "Valor erroneo de Linea ingresado" into cMensaje;
+
+else
+	select ea.idestacion as Estacion, ea.numChasis as Vehiculo, (timestampdiff(DAY, ea.fechaIngreso, ea.fechaSalida)) as "Promedio en dias" from estacionauto ea
+		inner join vehiculo v on v.numChasis = ea.numChasis
+		where v.fechaFin is not null and ea.idlineaDeMontaje = _idlineaDeMontaje
+		order by v.numChasis, ea.idestacion;
+end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `proveedorAlta` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -541,7 +647,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `vehiculoAlta`(
 	in _numChasis varchar(45),
 	in _idmodelo int,
 	in _idventa int,
-    -- in _idestacion int,
+    in _idestacion int,
     in _fechaInicio date,
     out cMensaje varchar(145)
 )
@@ -551,7 +657,7 @@ if not exists (select * from vehiculo v where v.numChasis = _numChasis) then
 	_numChasis,
 	_idmodelo,
     _idventa,
-    -- _idestacion,
+    _idestacion,
     _fechaInicio,
     null
 	);
@@ -640,4 +746,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-30 17:05:57
+-- Dump completed on 2019-10-31  2:16:00

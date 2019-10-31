@@ -1,154 +1,262 @@
-drop schema if exists terminalauto;
-create schema terminalauto;
-use terminalauto;
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: terminalauto
+-- ------------------------------------------------------
+-- Server version	8.0.17
 
-drop table if exists concesionaria;
-CREATE TABLE concesionaria (
-    idconcesionaria INT(11) NOT NULL,
-    nombre VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idconcesionaria)
-);
-DROP TABLE IF EXISTS modelo;
-CREATE TABLE modelo (
-    idmodelo INT(11) NOT NULL,
-    nombre VARCHAR(45) NOT NULL,
-    precio DOUBLE NOT NULL,
-    PRIMARY KEY (idmodelo)
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP TABLE IF EXISTS venta;
-CREATE TABLE venta (
-    idventa INT(11) NOT NULL AUTO_INCREMENT,
-    fecha DATE NOT NULL,
-    idconcesionaria INT(11) NOT NULL,
-    cuit VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idventa),
-    FOREIGN KEY (idconcesionaria)
-        REFERENCES concesionaria (idconcesionaria)
-);
+--
+-- Table structure for table `concesionaria`
+--
 
-drop table if exists detalleventa;
-CREATE TABLE detalleventa (
-    idventa INT(11) NOT NULL,
-    idmodelo INT(11) NOT NULL,
-    cantidad INT(11) NOT NULL,
-    precioUnitario DOUBLE NOT NULL,
-    precioFinal DOUBLE NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idmodelo , idventa),
-    FOREIGN KEY (idmodelo)
-        REFERENCES modelo (idmodelo),
-    FOREIGN KEY (idventa)
-        REFERENCES venta (idventa)
-);
+DROP TABLE IF EXISTS `concesionaria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `concesionaria` (
+  `idconcesionaria` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idconcesionaria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS lineademontaje;
-CREATE TABLE lineademontaje (
-    idlineaDeMontaje INT(11) NOT NULL,
-    idmodelo INT(11) NOT NULL,
-    PRIMARY KEY (idlineaDeMontaje),
-    FOREIGN KEY (idmodelo)
-        REFERENCES modelo (idmodelo)
-);
+--
+-- Table structure for table `detalleventa`
+--
 
-drop table if exists estacion;
-CREATE TABLE estacion (
-    idestacion INT(11) NOT NULL,
-    idlineaDeMontaje INT(11) NOT NULL,
-    tarea VARCHAR(45) NOT NULL,
-    PRIMARY KEY (idestacion, idlineaDeMontaje),
-    FOREIGN KEY (idlineaDeMontaje)
-        REFERENCES lineademontaje (idlineaDeMontaje)
-);
-DROP TABLE IF EXISTS vehiculo;
-CREATE TABLE vehiculo (
-    numChasis VARCHAR(20) NOT NULL,
-    idmodelo INT(11) NOT NULL,
-    idventa INT(11) NOT NULL,
-    idestacion INT(11) DEFAULT NULL,
-    fechaInicio DATE NOT NULL,
-    fechaFin DATE DEFAULT NULL,
-    PRIMARY KEY (numChasis),
-    UNIQUE KEY numChasis_UNIQUE (numChasis),
-    FOREIGN KEY (idmodelo , idventa)
-        REFERENCES detalleventa (idmodelo , idventa)
-    -- FOREIGN KEY (idestacion)
-    --    REFERENCES estacion (idestacion)
-);
+DROP TABLE IF EXISTS `detalleventa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalleventa` (
+  `idventa` int(11) NOT NULL,
+  `idmodelo` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precioUnitario` double NOT NULL,
+  `precioFinal` double NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idmodelo`,`idventa`),
+  KEY `idventa` (`idventa`),
+  CONSTRAINT `detalleventa_ibfk_1` FOREIGN KEY (`idmodelo`) REFERENCES `modelo` (`idmodelo`),
+  CONSTRAINT `detalleventa_ibfk_2` FOREIGN KEY (`idventa`) REFERENCES `venta` (`idventa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS estacionauto;
-CREATE TABLE estacionauto (
-    idestacion INT(11) NOT NULL,
-    idlineaDeMontaje INT NOT NULL,
-    numChasis VARCHAR(20) NOT NULL,
-    fechaIngreso DATE NOT NULL,
-    fechaSalida DATE default NULL,
-    PRIMARY KEY (numChasis , idestacion, idlineaDeMontaje),
-    FOREIGN KEY (idestacion)
-        REFERENCES estacion (idestacion),
-    FOREIGN KEY (numChasis)
-        REFERENCES vehiculo (numChasis)
-);
+--
+-- Table structure for table `estacion`
+--
 
-DROP TABLE IF EXISTS insumo;
-CREATE TABLE insumo (
-    idinsumo INT(11) NOT NULL,
-    nombre VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idinsumo)
-);
+DROP TABLE IF EXISTS `estacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estacion` (
+  `idestacion` int(11) NOT NULL,
+  `idlineaDeMontaje` int(11) NOT NULL,
+  `tarea` varchar(45) NOT NULL,
+  PRIMARY KEY (`idestacion`,`idlineaDeMontaje`),
+  KEY `idlineaDeMontaje` (`idlineaDeMontaje`),
+  CONSTRAINT `estacion_ibfk_1` FOREIGN KEY (`idlineaDeMontaje`) REFERENCES `lineademontaje` (`idlineaDeMontaje`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS insumoestacion;
-CREATE TABLE insumoestacion (
-    idestacion INT(11) NOT NULL,
-    idinsumo INT(11) NOT NULL,
-    cantidad DOUBLE DEFAULT NULL,
-    PRIMARY KEY (idestacion , idinsumo),
-    FOREIGN KEY (idestacion)
-        REFERENCES estacion (idestacion),
-    FOREIGN KEY (idinsumo)
-        REFERENCES insumo (idinsumo)
-);
+--
+-- Table structure for table `estacionauto`
+--
 
-drop table if exists pedidoinsumo;
-CREATE TABLE pedidoinsumo (
-    idpedidoInsumo INT(11) NOT NULL AUTO_INCREMENT,
-    idinsumo INT(11) NOT NULL,
-    fecha DATE NOT NULL,
-    precio FLOAT NOT NULL,
-    cantidad INT(11) NOT NULL,
-    PRIMARY KEY (idpedidoInsumo),
-    FOREIGN KEY (idinsumo)
-        REFERENCES insumo (idinsumo)
-);
+DROP TABLE IF EXISTS `estacionauto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estacionauto` (
+  `idestacion` int(11) NOT NULL,
+  `idlineaDeMontaje` int(11) NOT NULL,
+  `numChasis` varchar(20) NOT NULL,
+  `fechaIngreso` date NOT NULL,
+  `fechaSalida` date DEFAULT NULL,
+  PRIMARY KEY (`numChasis`,`idestacion`,`idlineaDeMontaje`),
+  KEY `idestacion` (`idestacion`),
+  CONSTRAINT `estacionauto_ibfk_1` FOREIGN KEY (`idestacion`) REFERENCES `estacion` (`idestacion`),
+  CONSTRAINT `estacionauto_ibfk_2` FOREIGN KEY (`numChasis`) REFERENCES `vehiculo` (`numChasis`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS proveedor;
-CREATE TABLE proveedor (
-    idproveedor INT(11) NOT NULL,
-    nombre VARCHAR(45) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idproveedor)
-);
+--
+-- Table structure for table `insumo`
+--
 
-DROP TABLE IF EXISTS proveedorinsumo;
-CREATE TABLE proveedorinsumo (
-    idinsumo INT(11) NOT NULL,
-    idproveedor INT(11) NOT NULL,
-    eliminado TINYINT(1) NOT NULL,
-    fechaEliminado DATE DEFAULT NULL,
-    PRIMARY KEY (idinsumo , idproveedor),
-    FOREIGN KEY (idinsumo)
-        REFERENCES insumo (idinsumo),
-    FOREIGN KEY (idproveedor)
-        REFERENCES proveedor (idproveedor)
-);
+DROP TABLE IF EXISTS `insumo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `insumo` (
+  `idinsumo` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idinsumo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `insumoestacion`
+--
 
+DROP TABLE IF EXISTS `insumoestacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `insumoestacion` (
+  `idestacion` int(11) NOT NULL,
+  `idinsumo` int(11) NOT NULL,
+  `cantidad` double DEFAULT NULL,
+  PRIMARY KEY (`idestacion`,`idinsumo`),
+  KEY `idinsumo` (`idinsumo`),
+  CONSTRAINT `insumoestacion_ibfk_1` FOREIGN KEY (`idestacion`) REFERENCES `estacion` (`idestacion`),
+  CONSTRAINT `insumoestacion_ibfk_2` FOREIGN KEY (`idinsumo`) REFERENCES `insumo` (`idinsumo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `lineademontaje`
+--
+
+DROP TABLE IF EXISTS `lineademontaje`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lineademontaje` (
+  `idlineaDeMontaje` int(11) NOT NULL,
+  `idmodelo` int(11) NOT NULL,
+  PRIMARY KEY (`idlineaDeMontaje`),
+  KEY `idmodelo` (`idmodelo`),
+  CONSTRAINT `lineademontaje_ibfk_1` FOREIGN KEY (`idmodelo`) REFERENCES `modelo` (`idmodelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `modelo`
+--
+
+DROP TABLE IF EXISTS `modelo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `modelo` (
+  `idmodelo` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `precio` double NOT NULL,
+  PRIMARY KEY (`idmodelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `pedidoinsumo`
+--
+
+DROP TABLE IF EXISTS `pedidoinsumo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedidoinsumo` (
+  `idpedidoInsumo` int(11) NOT NULL AUTO_INCREMENT,
+  `idinsumo` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `precio` float NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idpedidoInsumo`),
+  KEY `idinsumo` (`idinsumo`),
+  CONSTRAINT `pedidoinsumo_ibfk_1` FOREIGN KEY (`idinsumo`) REFERENCES `insumo` (`idinsumo`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `proveedor` (
+  `idproveedor` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idproveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `proveedorinsumo`
+--
+
+DROP TABLE IF EXISTS `proveedorinsumo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `proveedorinsumo` (
+  `idinsumo` int(11) NOT NULL,
+  `idproveedor` int(11) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idinsumo`,`idproveedor`),
+  KEY `idproveedor` (`idproveedor`),
+  CONSTRAINT `proveedorinsumo_ibfk_1` FOREIGN KEY (`idinsumo`) REFERENCES `insumo` (`idinsumo`),
+  CONSTRAINT `proveedorinsumo_ibfk_2` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `vehiculo`
+--
+
+DROP TABLE IF EXISTS `vehiculo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vehiculo` (
+  `numChasis` varchar(20) NOT NULL,
+  `idmodelo` int(11) NOT NULL,
+  `idventa` int(11) NOT NULL,
+  `idestacion` int(11) DEFAULT NULL,
+  `fechaInicio` date NOT NULL,
+  `fechaFin` date DEFAULT NULL,
+  PRIMARY KEY (`numChasis`),
+  UNIQUE KEY `numChasis_UNIQUE` (`numChasis`),
+  KEY `idmodelo` (`idmodelo`,`idventa`),
+  CONSTRAINT `vehiculo_ibfk_1` FOREIGN KEY (`idmodelo`, `idventa`) REFERENCES `detalleventa` (`idmodelo`, `idventa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `venta`
+--
+
+DROP TABLE IF EXISTS `venta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `venta` (
+  `idventa` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` date NOT NULL,
+  `idconcesionaria` int(11) NOT NULL,
+  `cuit` varchar(45) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
+  `fechaEliminado` date DEFAULT NULL,
+  PRIMARY KEY (`idventa`),
+  KEY `idconcesionaria` (`idconcesionaria`),
+  CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`idconcesionaria`) REFERENCES `concesionaria` (`idconcesionaria`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-10-31  2:15:34

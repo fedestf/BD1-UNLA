@@ -3,7 +3,7 @@
 -- Host: 127.0.0.1    Database: terminalauto
 -- ------------------------------------------------------
 -- Server version	8.0.17
-use terminalauto;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -31,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `detalleventa` WRITE;
 /*!40000 ALTER TABLE `detalleventa` DISABLE KEYS */;
-INSERT INTO `detalleventa` VALUES (1,1,50,22,1100,1,'2019-10-16'),(2,1,50,22,1100,0,NULL),(2,2,50,22,1100,0,NULL),(3,2,50,22,1100,0,NULL),(1,3,2,2,4,0,NULL),(3,3,50,22,1100,0,NULL),(6,3,4,800,3200,0,NULL);
+INSERT INTO `detalleventa` VALUES (1,1,50,22,1100,1,'2019-10-16'),(2,1,50,22,1100,0,NULL),(2,2,50,22,1100,0,NULL),(3,2,50,22,1100,0,NULL),(7,2,4,450,1800,0,NULL),(1,3,2,2,4,0,NULL),(3,3,50,22,1100,0,NULL),(6,3,4,800,3200,0,NULL);
 /*!40000 ALTER TABLE `detalleventa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -41,23 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `estacion` WRITE;
 /*!40000 ALTER TABLE `estacion` DISABLE KEYS */;
-delete from estacion; 
-insert into estacion values 
-(1,1,'Ensamble de chapa'),
-(2,1,'Asientos'),
-(3,1,'Instalación Eléctrica'),
-(4,1,'Pintura'),
-(5,1,'Carga de combustible y pruebas'),
-(1,2,'Ensamble de chapa'),
-(2,2,'Asientos'),
-(3,2,'Instalación Eléctrica'),
-(4,2,'Pintura'),
-(5,2,'Carga de combustible y pruebas'),
-(1,3,'Ensamble de chapa'),
-(2,3,'Asientos'),
-(3,3,'Instalación Eléctrica'),
-(4,3,'Pintura'),
-(5,3,'Carga de combustible y pruebas');
+INSERT INTO `estacion` VALUES (1,1,'Ensamble de chapa'),(1,2,'Ensamble de chapa'),(1,3,'Ensamble de chapa'),(2,1,'Asientos'),(2,2,'Asientos'),(2,3,'Asientos'),(3,1,'Instalación Eléctrica'),(3,2,'Instalación Eléctrica'),(3,3,'Instalación Eléctrica'),(4,1,'Pintura'),(4,2,'Pintura'),(4,3,'Pintura'),(5,1,'Carga de combustible y pruebas'),(5,2,'Carga de combustible y pruebas'),(5,3,'Carga de combustible y pruebas');
 /*!40000 ALTER TABLE `estacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,48 +51,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `estacionauto` WRITE;
 /*!40000 ALTER TABLE `estacionauto` DISABLE KEYS */;
-insert into estacionauto values
--- modelo1 linea1:  estacion 1 2 3 4 5
-	-- venta 2 
-(1,1,'M1-01','2014-03-12','2014-04-13'),
-(2,1,'M1-01','2014-04-14','2014-05-24'),
-(3,1,'M1-01','2014-05-25','2014-07-04'),
-(4,1,'M1-01','2014-07-05','2014-07-11'),
-(5,1,'M1-01','2014-07-12','2014-07-15'),
--- modelo2 linea2 : est 6 7 8 9 10 
-	-- venta3:  06/11/2012	26/05/2013
-(1,2,'M2-02','2012-11-06','2012-12-06'),
-(2,2,'M2-02','2012-12-07','2012-12-26'),
-(3,2,'M2-02','2012-12-27','2013-01-14'),
-(4,2,'M2-02','2013-01-15','2013-02-18'),
-(5,2,'M2-02','2013-02-19','2013-05-26'),
-
--- modelo 3 linea3: est 11, 12 13 14 15
-	-- venta 1		 12/12/2018		15/02/2019
-(1,3,'M2-03','2018-12-12','2018-12-28'),
-(2,3,'M2-03','2018-12-29','2019-01-08'),
-(3,3,'M2-03','2019-01-09','2019-01-14'),
-(4,3,'M2-03','2019-01-15','2019-01-18'),
-(5,3,'M2-03','2019-01-19','2019-02-15'),    
-
-
-	-- venta 6  desde 29/01/2019
-(1,3,'CGA-363','2019-01-29','2019-02-02'),
-(1,3,'GVK-565','2019-02-03','2019-02-25'),
-(1,3,'MAN-538','2019-02-26','2019-03-07'),
-(1,3,'XWS-964','2019-03-08','2019-03-12'),
-
-(2,3,'CGA-363','2019-02-03','2019-02-08'),
-(2,3,'GVK-565','2019-02-26','2019-02-28'),
-(2,3,'MAN-538','2019-03-08','2019-03-16'),
-(2,3,'XWS-964','2019-03-17','2019-03-20'),
-
-(3,3,'CGA-363','2019-02-09','2019-02-20'),
-(3,3,'GVK-565','2019-03-29','2019-04-12'),
-(3,3,'MAN-538','2019-04-13','2019-04-25'),
-
-(4,3,'CGA-363','2019-02-21','2019-03-18'),
-(4,3,'GVK-565','2019-04-13','2019-04-27');
+INSERT INTO `estacionauto` VALUES (1,3,'CGA-363','2019-01-29','2019-02-02'),(2,3,'CGA-363','2019-02-03','2019-02-08'),(3,3,'CGA-363','2019-02-09','2019-02-20'),(4,3,'CGA-363','2019-02-21','2019-03-18'),(1,3,'GVK-565','2019-02-03','2019-02-25'),(2,3,'GVK-565','2019-02-26','2019-02-28'),(3,3,'GVK-565','2019-03-29','2019-04-12'),(4,3,'GVK-565','2019-04-13','2019-04-27'),(1,2,'LMA-616','2019-10-31','2019-10-31'),(2,2,'LMA-616','2019-10-31','2019-10-31'),(3,2,'LMA-616','2019-10-31','2019-10-31'),(4,2,'LMA-616','2019-10-31','2019-10-31'),(5,2,'LMA-616','2019-10-31','2019-10-31'),(1,1,'M1-01','2014-03-12','2014-04-13'),(2,1,'M1-01','2014-04-14','2014-05-24'),(3,1,'M1-01','2014-05-25','2014-07-04'),(4,1,'M1-01','2014-07-05','2014-07-11'),(5,1,'M1-01','2014-07-12','2014-07-15'),(1,2,'M2-02','2012-11-06','2012-12-06'),(2,2,'M2-02','2012-12-07','2012-12-26'),(3,2,'M2-02','2012-12-27','2013-01-14'),(4,2,'M2-02','2013-01-15','2013-02-18'),(5,2,'M2-02','2013-02-19','2013-05-26'),(1,3,'M3-03','2018-12-12','2018-12-28'),(2,3,'M3-03','2018-12-29','2019-01-08'),(3,3,'M3-03','2019-01-09','2019-01-14'),(4,3,'M3-03','2019-01-15','2019-01-18'),(5,3,'M3-03','2019-01-19','2019-02-15'),(1,3,'MAN-538','2019-02-26','2019-03-07'),(2,3,'MAN-538','2019-03-08','2019-03-16'),(3,3,'MAN-538','2019-04-13','2019-04-25'),(1,3,'XWS-964','2019-03-08','2019-03-12'),(2,3,'XWS-964','2019-03-17','2019-03-20');
 /*!40000 ALTER TABLE `estacionauto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +80,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `lineademontaje` WRITE;
 /*!40000 ALTER TABLE `lineademontaje` DISABLE KEYS */;
-insert into lineademontaje values (1,1),(2,2),(3,3);
+INSERT INTO `lineademontaje` VALUES (1,1),(2,2),(3,3);
 /*!40000 ALTER TABLE `lineademontaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,14 +130,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `vehiculo` WRITE;
 /*!40000 ALTER TABLE `vehiculo` DISABLE KEYS */;
-insert into vehiculo (numChasis,idmodelo,idventa,fechaInicio,fechaFin) values
-('M1-01',	1,2,	'2014-03-12','2014-07-15'),
-('M2-02',	2,3,	'2012-11-06','2013-05-26'),
-('M3-03',	3,1,	'2018-12-12','2019-02-15'),
-('MAN-538',	3,6,	'2019-10-29',NULL),
-('XWS-964',	3,6,	'2019-10-29',NULL),
-('CGA-363',	3,6,	'2019-10-29',NULL),
-('GVK-565',	3,6,	'2019-10-29',NULL);
+INSERT INTO `vehiculo` VALUES ('CGA-363',3,6,4,'2019-10-29',NULL),('GVK-565',3,6,NULL,'2019-10-29',NULL),('LMA-616',2,7,NULL,'2019-10-31','2019-10-31'),('M1-01',1,2,NULL,'2014-03-12','2014-07-15'),('M2-02',2,3,NULL,'2012-11-06','2013-05-26'),('M3-03',3,1,NULL,'2018-12-12','2019-02-15'),('MAN-538',3,6,NULL,'2019-10-29',NULL),('MIE-925',2,7,NULL,'2019-10-31',NULL),('QTW-114',2,7,NULL,'2019-10-31',NULL),('UGT-266',2,7,NULL,'2019-10-31',NULL),('XWS-964',3,6,NULL,'2019-10-29',NULL);
 /*!40000 ALTER TABLE `vehiculo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,14 +140,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
-insert into venta (idventa,fecha,idconcesionaria ,cuit ,eliminado) values
-(1,	'2018-12-12'	,1,	'20419120929',	0),
-(2, '2014-03-12'    ,2,	'20419120929',	0),
-(3,	'2012-11-06'	,3,	'20419120929',	0),
-(4,	'2019-10-13'	,1,	'20419120929',	0),
-(5,	'2019-10-16'	,1,	'20419120929',	0),
-(6,	'2019-01-29'	,3,	'20369825551',	0); 
-
+INSERT INTO `venta` VALUES (1,'2018-12-12',1,'20419120929',0,NULL),(2,'2014-03-12',2,'20419120929',0,NULL),(3,'2012-11-06',3,'20419120929',0,NULL),(4,'2019-10-13',1,'20419120929',0,NULL),(5,'2019-10-16',1,'20419120929',0,NULL),(6,'2019-01-29',3,'20369825551',0,NULL),(7,'2019-10-31',2,'20369825551',0,NULL);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -224,4 +153,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-30 15:06:16
+-- Dump completed on 2019-10-31  2:15:16
