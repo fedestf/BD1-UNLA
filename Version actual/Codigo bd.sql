@@ -56,14 +56,26 @@ CREATE TABLE insumo (
 );
 
 
+-- DROP TABLE IF EXISTS insumoestacion;
+-- CREATE TABLE insumoestacion (
+--  idestacion int(11) NOT NULL,
+--  idinsumo int(11) NOT NULL,
+--  cantidad double DEFAULT NULL,
+--  PRIMARY KEY (idestacion,idinsumo),
+--  FOREIGN KEY (idestacion) REFERENCES estacion (idestacion),
+--  FOREIGN KEY (idinsumo) REFERENCES insumo (idinsumo)
+-- );
+
 DROP TABLE IF EXISTS insumoestacion;
 CREATE TABLE insumoestacion (
   idestacion int(11) NOT NULL,
+  idlineaDeMontaje int(11) NOT NULL,
   idinsumo int(11) NOT NULL,
   cantidad double DEFAULT NULL,
-  PRIMARY KEY (idestacion,idinsumo),
+  PRIMARY KEY (idlineaDeMontaje,idestacion,idinsumo),
   FOREIGN KEY (idestacion) REFERENCES estacion (idestacion),
-  FOREIGN KEY (idinsumo) REFERENCES insumo (idinsumo)
+  FOREIGN KEY (idinsumo) REFERENCES insumo (idinsumo),
+  foreign key (idlineaDeMontaje) references lineademontaje (idlineademontaje)
 );
 
 DROP TABLE IF EXISTS lineademontaje;
