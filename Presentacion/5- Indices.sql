@@ -8,7 +8,7 @@ create index lineaDeMontxMod on lineademontaje (idlineademontaje,idmodelo) USING
 
 create index estacionxLineaDeMont on estacion (idestacion,idlineademontaje) USING HASH; -- POR SI HACE FALTA LA BUSQUEDA DE DATOS 
 
-- -------------------------------------------- de aca para abajo ya es solo para poner cosas 
+-- -------------------------------------------- de aca para abajo ya es solo para poner cosas 
 create index listaAutos on estacionauto (numChasis) USING HASH;
 create index listaInsumos on insumo (nombre) USING HASH;
 create index listaModelos on modelo (nombre) USING HASH;
