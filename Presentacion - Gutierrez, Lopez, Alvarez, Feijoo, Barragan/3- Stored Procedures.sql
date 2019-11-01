@@ -644,19 +644,27 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `reporteInsumosPorPedido`(
-	in _idventa int
-)
-begin 
+	in _idventa int,
+	out nResultado tinyint,
+    out cMensaje varchar(145))
+BEGIN
+set cMensaje = null;
+set nResultado = 0; 
 
-select dv.idventa, lm.idlineaDeMontaje, e.idestacion,e.tarea, ie.idinsumo,sum(ie.cantidad * dv.cantidad) , i.nombre
-	from  detalleventa dv 
-		inner join lineaDeMontaje lm on dv.idmodelo= lm.idmodelo
-		inner join estacion e on lm.idlineaDeMontaje = e.idlineaDeMontaje
-		inner join insumoEstacion ie on e.idestacion= ie.idestacion and e.idlineaDeMontaje = ie.idlineaDeMontaje
-		inner join insumo i on ie.idinsumo= i.idinsumo
-	where dv.idventa=_idventa
-    group by i.idinsumo
-   ;
+if exists (select * from venta v where v.idventa = _idventa) then
+	select dv.idventa, lm.idlineaDeMontaje, e.idestacion,e.tarea, ie.idinsumo,sum(ie.cantidad * dv.cantidad) , i.nombre
+		from  detalleventa dv 
+			inner join lineaDeMontaje lm on dv.idmodelo= lm.idmodelo
+			inner join estacion e on lm.idlineaDeMontaje = e.idlineaDeMontaje
+			inner join insumoEstacion ie on e.idestacion= ie.idestacion and e.idlineaDeMontaje = ie.idlineaDeMontaje
+			inner join insumo i on ie.idinsumo= i.idinsumo
+		where dv.idventa=_idventa
+		group by i.idinsumo
+	   ;
+else
+	set nResultado = -1;
+	select "No existe la venta ingresada" into cMensaje;
+end if;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -674,9 +682,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `reporteVehiculosPorVenta`(
-	in _idventa int
-)
-begin
+	in _idventa int,
+	out nResultado tinyint,
+    out cMensaje varchar(145))
+BEGIN
+set cMensaje = null;
+set nResultado = 0; 
+
+if exists (select * from venta v where v.idventa = _idventa) then
 	select  v.idventa,v.numChasis ,m.nombre as modelo, v.fechaFin,  ea.idestacion as ultimaEstacion, e.tarea as tareaEstacion
 			from vehiculo v
             inner join estacionauto ea on ea.numChasis= v.numChasis
@@ -689,6 +702,11 @@ begin
                                         group by numChasis)
                 group by v.numChasis
                 order by ea.idestacion desc;
+                
+else
+	set nResultado = -1;
+	select "No existe la venta ingresada" into cMensaje;
+end if;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -808,4 +826,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-31 20:03:10
+-- Dump completed on 2019-11-01 14:33:28

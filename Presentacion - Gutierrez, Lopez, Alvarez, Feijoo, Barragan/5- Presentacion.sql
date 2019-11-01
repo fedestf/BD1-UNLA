@@ -8,7 +8,6 @@ select * from concesionaria;
 
 call pedidoVehiculos(1, 20369825551, 2, 4);
 
-select * from vehiculo;
 
 call inicioFabricacion('THG-417',@resultado, @mensaje);
 select @resultado, @mensaje;
@@ -16,9 +15,11 @@ select @resultado, @mensaje;
 call avanceEstacion('MIE-925',@resultado, @mensaje);
 select @resultado, @mensaje;
 
-call reporteVehiculosPorVenta(8);
+call reporteVehiculosPorVenta(8,@resultado, @mensaje);
+select @resultado, @mensaje;
 
-call reporteInsumosPorPedido(8);
+call reporteInsumosPorPedido(8,@resultado, @mensaje);
+select @resultado, @mensaje;
 
 call promedioConstruccion(2,@resultado, @mensaje);
 select @resultado, @mensaje;
